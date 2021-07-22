@@ -18,7 +18,7 @@ func (fld *Fld) Print() *dst.CallExpr  {
 	if len(fld.NameRu) > 0 {
 		args = append(args, &dst.BasicLit{Kind: token.STRING, Value: fmt.Sprintf("%q", fld.NameRu)})
 	}
-	if fld.FuncName == "GetFldSelectString" {
+	if fld.FuncName == "GetFldSelectString" ||  fld.FuncName == "GetFldString"{
 		args = append(args, &dst.BasicLit{Kind: token.INT, Value: fmt.Sprintf("%v", fld.Size)})
 	}
 	if fld.FuncName == "GetFldRef" {
@@ -52,7 +52,12 @@ func (fld *Fld) Print() *dst.CallExpr  {
 	}
 	// печать params
 	args = append(args, &dst.BasicLit{Kind: token.STRING, Value:  fmt.Sprintf("%q", fld.ColClass)})
-	for _, p := range fld.Params {
+	for i, p := range fld.Params {
+		// для GET_FLD_TITLE_COMPUTED первый параметр ставим первым аргументом в функции
+		if i == 0 && fld.FuncName == GET_FLD_TITLE_COMPUTED {
+			args = append([]dst.Expr{&dst.BasicLit{Kind: token.STRING, Value:  fmt.Sprintf("%q", p)}}, args...)
+			continue
+		}
 		args = append(args, &dst.BasicLit{Kind: token.STRING, Value:  fmt.Sprintf("%q", p)})
 	}
 	res.Args = args

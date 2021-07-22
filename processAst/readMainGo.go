@@ -43,7 +43,7 @@ func (doc *Doc) ReadMainGo() error {
 							for i, arg := range n.Args {
 								if arg, ok := arg.(*dst.BasicLit); ok {
 									// аргументы GetFldTitle обрабатываем отдельно
-									if fld.FuncName == "GetFldTitle" {
+									if fld.FuncName == GET_FLD_TITLE || fld.FuncName == GET_FLD_TITLE_COMPUTED {
 										if arg.Kind == token.STRING {
 											argVal := replaceQuotes(arg.Value)
 											// отдельно - ширину колонки

@@ -2,6 +2,11 @@ package processAst
 
 import "github.com/dave/dst"
 
+const (
+	GET_FLD_TITLE = "GetFldTitle"
+	GET_FLD_TITLE_COMPUTED = "GetFldTitleComputed"
+)
+
 type (
 	ProjectType struct {
 		Docs []Doc `json:"docs"`

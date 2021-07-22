@@ -20,6 +20,10 @@ export default (fld) => {
       return 'email'
     case 'GetFldPhone':
       return 'phone'
+    case 'GetFldInt64':
+      return 'pin'
+    case 'GetFldDouble':
+      return 'pin'
     default:
       return 'text_fields'
   }

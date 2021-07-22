@@ -16,7 +16,7 @@
           <q-tooltip>настройка сетки</q-tooltip>
         </q-btn>
       </div>
-      <add-new-fld/>
+      <comp-add-new-fld :selectedDoc="selectedDoc" :project="projectLocal" @update="addNewFld"/>
     </div>
     <div class="col">
       <doc-grid-edit v-if="isShowDocGridEdit" :fldsByRows="fldsByRows" class="q-mb-md" @update="docGridUpdate" @close="isShowDocGridEdit = false"/>
@@ -51,14 +51,15 @@
   import fldsGroupByRows from 'src/app/components/docFuncs/fldsGroupByRows'
   import getIconByFldType from 'src/app/components/docFuncs/getIconByFldType'
   import docGridUpdateFunc from 'src/app/components/docFuncs/docGridUpdate'
-  import addNewFld from 'src/app/components/comps/addNewFld'
+  import compAddNewFld from 'src/app/components/comps/addNewFld'
 
   export default {
     props: ['selectedDoc', 'project'],
     emits: ['update'],
-    components: {docGridEdit, addNewFld},
+    components: {docGridEdit, compAddNewFld},
     setup(props, {emit}) {
       const doc = toRefs(props).selectedDoc
+      const projectLocal = toRefs(props).project
       const fldsByRows = computed(() => fldsGroupByRows(doc.value.flds))
       const getIcon = getIconByFldType
       const isShowDocGridEdit = ref(false)
@@ -71,12 +72,18 @@
       //   emit('update', doc)
       // }, { deep: true } )
 
+      const addNewFld = (v) => {
+        doc.value.flds.push(v)
+      }
+
       return {
+        projectLocal,
         doc,
         fldsByRows,
         getIcon,
         isShowDocGridEdit,
         docGridUpdate,
+        addNewFld,
       }
     },
   }

@@ -52,7 +52,6 @@
                 return v
               })
               this.project = res.result
-              console.log('this.project', this.project)
             }
           })
         },
