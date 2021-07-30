@@ -195,21 +195,21 @@
       if (newFld.value.value === 'GetFldSelectString') {
         let isError = false
         fldVueOptionsItems.value.map(v => {
-          if ((!v.label || v.label.length === 0) || (!v.value || v.value.length === 0))  isError = true
+          if ((!v.Label || v.Label.length === 0) || (!v.Value || v.Value.length === 0))  isError = true
         })
         if (isError) return {message: `не заполнены значения списка`}
 
         // проверяем уникальность label и value
-        const labelArr = _(fldVueOptionsItems.value.map(v=>v.label)).groupBy().pickBy(x => x.length > 1).keys().value()
+        const labelArr = _(fldVueOptionsItems.value.map(v=>v.Label)).groupBy().pickBy(x => x.length > 1).keys().value()
         if (labelArr.length > 0) return {message: `дублирование ${labelArr[0]}`}
 
-        const valueArr = _(fldVueOptionsItems.value.map(v=>v.value)).groupBy().pickBy(x => x.length > 1).keys().value()
+        const valueArr = _(fldVueOptionsItems.value.map(v=>v.Value)).groupBy().pickBy(x => x.length > 1).keys().value()
         if (valueArr.length > 0) return {message: `дублирование ${valueArr[0]}`}
 
 
         // перед сохранением модифицируем
         return {fld_vue_options_item: fldVueOptionsItems.value.map(v => {
-            return {Label: v.label, Value: v.value, Color: v.color}
+            return {Label: v.Label, Value: v.Value, Color: v.Color}
           })}
       }
     }

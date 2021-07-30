@@ -95,6 +95,10 @@ func printFldVueOptionsItem(fld *Fld) *dst.CompositeLit {
 		}
 		el1 := &dst.CompositeLit{Elts: []dst.Expr{}}
 		for label, value := range v {
+			// пропускаем id, которые проставляем во vue
+			if label == "id" {
+				continue
+			}
 			el1.Elts = append(el1.Elts, &dst.KeyValueExpr{Key: &dst.Ident{ Name: label}, Value: &dst.BasicLit{Kind: token.STRING, Value: fmt.Sprintf("%q", value)}})
 		}
 		el.Elts = append(el.Elts, el1)

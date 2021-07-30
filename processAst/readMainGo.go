@@ -158,8 +158,6 @@ func (doc *Doc) ReadMainGo() error {
 		return true
 	})
 
-	fmt.Printf("%s %s\n", doc.Name, doc.NameRu)
-
 	return nil
 }
 
@@ -223,7 +221,9 @@ func findArrType(arg dst.Expr, typeName string) (res []map[string]string) {
 										m[key] = value
 									}
 								}
-								res = append(res, m)
+								if len(m) > 0{
+									res = append(res, m)
+								}
 							}
 
 							return true

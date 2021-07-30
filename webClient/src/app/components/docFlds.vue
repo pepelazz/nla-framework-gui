@@ -37,7 +37,7 @@
 
             <q-separator />
             <q-card-actions style="padding-top: 2px; padding-bottom: 2px;">
-              <q-btn flat round icon="edit" color="grey" size="sm"><q-tooltip>редактировать</q-tooltip></q-btn>
+              <comp-edit-fld v-if="fld.name" :fld="fld"/>
               <q-space/>
               <comp-delete-fld v-if="fld.name" :name="fld.name_ru" @remove="removeFld(fld)"/>
             </q-card-actions>
@@ -58,11 +58,12 @@
   import docGridUpdateFunc from 'src/app/components/docFuncs/docGridUpdate'
   import compAddNewFld from 'src/app/components/comps/addNewFld'
   import compDeleteFld from 'src/app/components/comps/deleteFld'
+  import compEditFld from 'src/app/components/comps/editFld'
 
   export default {
     props: ['selectedDoc', 'project'],
     emits: ['update'],
-    components: {docGridEdit, compAddNewFld, compDeleteFld},
+    components: {docGridEdit, compAddNewFld, compDeleteFld, compEditFld},
     setup(props, {emit}) {
       const doc = toRefs(props).selectedDoc
       const projectLocal = toRefs(props).project
@@ -83,6 +84,7 @@
       }
 
       const removeFld = (fld) => {
+        // TODO: добавить удаление колонки в postgres
         const i = doc.value.flds.findIndex(v => v.name === fld.name)
         doc.value.flds.splice(i, 1)
       }
