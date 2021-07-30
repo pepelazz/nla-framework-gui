@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/pepelazz/helen_andorra/gui/webServer"
+	"github.com/pepelazz/guiDev/nla_framework_gui/webServer"
 )
 
 func main() {

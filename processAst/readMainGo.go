@@ -218,7 +218,7 @@ func findArrType(arg dst.Expr, typeName string) (res []map[string]string) {
 											key = k.Name
 										}
 										if v, ok := el.Value.(*dst.BasicLit); ok {
-											value = v.Value
+											value = replaceQuotes(v.Value)
 										}
 										m[key] = value
 									}

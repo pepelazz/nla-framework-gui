@@ -8,7 +8,7 @@
       vertical
       color="primary"
       animated
-      style="width: 450px"
+      style="width: 650px"
     >
       <q-step
         :name="1"
@@ -56,6 +56,8 @@
           </template>
         </q-input>
 
+        <edit-fld-vue-options-items v-if="newFld.value === 'GetFldSelectString'" :options="fldVueOptionsItems"/>
+
         <q-checkbox label="обязательное к заполнению" v-model="is_required"/>
 
         <q-stepper-navigation>
@@ -72,8 +74,10 @@
 <script>
     import {ref, computed, onMounted} from 'vue'
     import {Notify} from 'quasar'
+    import editFldVueOptionsItems from 'src/app/components/comps/comps/editFldVueOptionsItems'
     export default {
-        props: ['selectedDoc', 'project'],
+      components: {editFldVueOptionsItems},
+      props: ['selectedDoc', 'project'],
         emits: ['update'],
         setup(props, {emit}) {
           const isShowDialogAddFld = ref(false)
@@ -84,6 +88,7 @@
           const size = ref(0)
           const is_required = ref(false)
           const refTableName = ref(null)
+          const fldVueOptionsItems = ref([])
 
           let docListOptions = computed(() => {
             return props.project.docs.filter(d => d.name !== props.selectedDoc.name)
@@ -103,6 +108,7 @@
             {label: 'email', value: 'GetFldEmail'},
             {label: 'тэги', value: 'GetFldTag'},
             {label: 'ссылка на другую таблицу', value: 'GetFldRef'},
+            {label: 'выбор из списка', value: 'GetFldSelectString'},
           ]
 
           const toStep2 = () => {
@@ -146,17 +152,25 @@
               return;
             }
 
+            // проверка для FldSelectString
+            const {fld_vue_options_item, message} = checkGetFldSelectString(newFld, fldVueOptionsItems)
+            if (message) {
+                  Notify.create({type: 'negative', message})
+                  return;
+            }
+
             // определяем row_col
             const lastFld = props.selectedDoc.flds[props.selectedDoc.flds.length-1]
             const rc = lastFld.row_col ? lastFld.row_col[0] : [1, 1]
             let row_col = rc[1] > 1 || !['col-2', 'col-3', 'col-4'].includes(lastFld.col_class)  ? [[rc[0] + 1, 1]] : [[rc[0], 2]]
 
-            emit('update', {func_name: newFld.value.value, name: name.value, name_ru: name_ru.value, size: +size.value, row_col, ref_table: refTableName.value.value, col_class: 'col-4'})
+            emit('update', {func_name: newFld.value.value, name: name.value, name_ru: name_ru.value, size: +size.value, row_col, ref_table: refTableName.value?.value, fld_vue_options_item, col_class: 'col-4'})
             isShowDialogAddFld.value = false
             name.value = null
             name_ru.value = null
             size.value = 0
             is_required.value = false
+            fldVueOptionsItems.value = []
           }
 
           return {
@@ -171,9 +185,34 @@
             size,
             is_required,
             refTableName,
+            fldVueOptionsItems,
             toStep2,
           }
         }
     }
+
+    const checkGetFldSelectString = (newFld, fldVueOptionsItems) => {
+      if (newFld.value.value === 'GetFldSelectString') {
+        let isError = false
+        fldVueOptionsItems.value.map(v => {
+          if ((!v.label || v.label.length === 0) || (!v.value || v.value.length === 0))  isError = true
+        })
+        if (isError) return {message: `не заполнены значения списка`}
+
+        // проверяем уникальность label и value
+        const labelArr = _(fldVueOptionsItems.value.map(v=>v.label)).groupBy().pickBy(x => x.length > 1).keys().value()
+        if (labelArr.length > 0) return {message: `дублирование ${labelArr[0]}`}
+
+        const valueArr = _(fldVueOptionsItems.value.map(v=>v.value)).groupBy().pickBy(x => x.length > 1).keys().value()
+        if (valueArr.length > 0) return {message: `дублирование ${valueArr[0]}`}
+
+
+        // перед сохранением модифицируем
+        return {fld_vue_options_item: fldVueOptionsItems.value.map(v => {
+            return {Label: v.label, Value: v.value, Color: v.color}
+          })}
+      }
+    }
+
 </script>
 
