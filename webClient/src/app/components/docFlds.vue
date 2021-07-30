@@ -36,6 +36,11 @@
             </q-card-section>
 
             <q-separator />
+            <q-card-actions style="padding-top: 2px; padding-bottom: 2px;">
+              <q-btn flat round icon="edit" color="grey" size="sm"><q-tooltip>редактировать</q-tooltip></q-btn>
+              <q-space/>
+              <comp-delete-fld v-if="fld.name" :name="fld.name_ru" @remove="removeFld(fld)"/>
+            </q-card-actions>
           </q-card>
         </div>
       </div>
@@ -52,11 +57,12 @@
   import getIconByFldType from 'src/app/components/docFuncs/getIconByFldType'
   import docGridUpdateFunc from 'src/app/components/docFuncs/docGridUpdate'
   import compAddNewFld from 'src/app/components/comps/addNewFld'
+  import compDeleteFld from 'src/app/components/comps/deleteFld'
 
   export default {
     props: ['selectedDoc', 'project'],
     emits: ['update'],
-    components: {docGridEdit, compAddNewFld},
+    components: {docGridEdit, compAddNewFld, compDeleteFld},
     setup(props, {emit}) {
       const doc = toRefs(props).selectedDoc
       const projectLocal = toRefs(props).project
@@ -76,6 +82,11 @@
         doc.value.flds.push(v)
       }
 
+      const removeFld = (fld) => {
+        const i = doc.value.flds.findIndex(v => v.name === fld.name)
+        doc.value.flds.splice(i, 1)
+      }
+
       return {
         projectLocal,
         doc,
@@ -84,6 +95,7 @@
         isShowDocGridEdit,
         docGridUpdate,
         addNewFld,
+        removeFld,
       }
     },
   }
