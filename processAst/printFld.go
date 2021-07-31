@@ -112,7 +112,14 @@ func printFldVueFilesParams(fld *Fld) *dst.CompositeLit {
 		Elts: []dst.Expr{},
 	}
 	for label, value := range fld.FldVueFilesParams {
-		el.Elts = append(el.Elts, &dst.KeyValueExpr{Key: &dst.Ident{ Name: label}, Value: &dst.BasicLit{Kind: token.STRING, Value: value}})
+		fmt.Printf("label %s value %s\n", label, value)
+		if len(value) == 0 {
+			continue
+		}
+		if label == "MaxFileSize" {
+			v = value
+		}
+		el.Elts = append(el.Elts, &dst.KeyValueExpr{Key: &dst.Ident{ Name: label}, Value: &dst.BasicLit{Kind: token.STRING, Value: v}})
 	}
 	return el
 }

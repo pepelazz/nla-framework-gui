@@ -57,6 +57,7 @@
         </q-input>
 
         <edit-fld-vue-options-items v-if="newFld.value === 'GetFldSelectString'" :options="fldVueOptionsItems"/>
+        <edit-fld-vue-files-params v-if="newFld.value === 'GetFldFiles'" :params="fldVueFilesParams"/>
 
         <q-checkbox label="обязательное к заполнению" v-model="is_required"/>
 
@@ -72,11 +73,12 @@
 </template>
 
 <script>
-    import {ref, computed, onMounted} from 'vue'
+    import {ref, computed, reactive} from 'vue'
     import {Notify} from 'quasar'
     import editFldVueOptionsItems from 'src/app/components/comps/comps/editFldVueOptionsItems'
+    import editFldVueFilesParams from 'src/app/components/comps/comps/editFldVueFilesParams'
     export default {
-      components: {editFldVueOptionsItems},
+      components: {editFldVueOptionsItems, editFldVueFilesParams},
       props: ['selectedDoc', 'project'],
         emits: ['update'],
         setup(props, {emit}) {
@@ -89,6 +91,7 @@
           const is_required = ref(false)
           const refTableName = ref(null)
           const fldVueOptionsItems = ref([])
+          const fldVueFilesParams = reactive({Accept: null, MaxFileSize: null})
 
           let docListOptions = computed(() => {
             return props.project.docs.filter(d => d.name !== props.selectedDoc.name)
@@ -109,6 +112,7 @@
             {label: 'тэги', value: 'GetFldTag'},
             {label: 'ссылка на другую таблицу', value: 'GetFldRef'},
             {label: 'выбор из списка', value: 'GetFldSelectString'},
+            {label: 'файлы', value: 'GetFldFiles'},
           ]
 
           const toStep2 = () => {
@@ -164,13 +168,19 @@
             const rc = lastFld.row_col ? lastFld.row_col[0] : [1, 1]
             let row_col = rc[1] > 1 || !['col-2', 'col-3', 'col-4'].includes(lastFld.col_class)  ? [[rc[0] + 1, 1]] : [[rc[0], 2]]
 
-            emit('update', {func_name: newFld.value.value, name: name.value, name_ru: name_ru.value, size: +size.value, row_col, ref_table: refTableName.value?.value, fld_vue_options_item, col_class: 'col-4'})
+            emit('update', {
+              func_name: newFld.value.value, name: name.value, name_ru: name_ru.value, size: +size.value, row_col, ref_table: refTableName.value?.value,
+              fld_vue_options_item,
+              fld_vue_files_params: fldVueFilesParams,
+              col_class: 'col-4'})
             isShowDialogAddFld.value = false
             name.value = null
             name_ru.value = null
             size.value = 0
             is_required.value = false
             fldVueOptionsItems.value = []
+            // fldVueFilesParams.value.MaxFileSize = null
+            // fldVueFilesParams.value.Accent = null
           }
 
           return {
@@ -186,6 +196,7 @@
             is_required,
             refTableName,
             fldVueOptionsItems,
+            fldVueFilesParams,
             toStep2,
           }
         }
@@ -212,6 +223,7 @@
             return {Label: v.Label, Value: v.Value, Color: v.Color}
           })}
       }
+      return {fld_vue_options_item: []}
     }
 
 </script>

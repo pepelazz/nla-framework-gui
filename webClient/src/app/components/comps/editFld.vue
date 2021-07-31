@@ -10,7 +10,8 @@
       <q-card-section class="q-pt-none">
         <q-input dense v-model="localFld.name_ru" autofocus outlined label="название" @keyup.enter="isShowDialog=false"/>
 
-        <edit-fld-vue-options-items v-show="localFld.func_name === 'GetFldSelectString'" :options="localFld.fld_vue_options_item"/>
+        <edit-fld-vue-options-items v-if="localFld.func_name === 'GetFldSelectString'" :options="localFld.fld_vue_options_item"/>
+        <edit-fld-vue-files-params v-if="localFld.func_name === 'GetFldFiles'" :params="localFld.fld_vue_files_params"/>
 
       </q-card-section>
 
@@ -24,15 +25,20 @@
 
 <script>
   import editFldVueOptionsItems from 'src/app/components/comps/comps/editFldVueOptionsItems'
+  import editFldVueFilesParams from 'src/app/components/comps/comps/editFldVueFilesParams'
   import {ref, toRefs, onMounted} from 'vue'
     export default {
       props: ['fld'],
-      components: {editFldVueOptionsItems},
+      components: {editFldVueOptionsItems, editFldVueFilesParams},
       setup(props) {
         let initFld
         const isShowDialog = ref(false)
         const localFld = toRefs(props).fld
-        const ref_EditFldVueOptionsItems = ref(null)
+
+        // добавляем дефолтный объект fld_vue_files_params
+        if (localFld.value.func_name === 'GetFldFiles' && !localFld.value.fld_vue_files_params) {
+          localFld.value.fld_vue_files_params = {Accept: null, MaxFileSize: null}
+        }
         const cancel = () => {
           localFld.value.name_ru = initFld.name_ru
         }
@@ -45,7 +51,6 @@
         return {
           isShowDialog,
           localFld,
-          ref_EditFldVueOptionsItems,
           cancel,
           showDialog,
         }
