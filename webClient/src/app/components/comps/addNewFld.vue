@@ -56,7 +56,7 @@
           </template>
         </q-input>
 
-        <edit-fld-vue-options-items v-if="newFld.value === 'GetFldSelectString'" :options="fldVueOptionsItems"/>
+        <edit-fld-vue-options-items v-if="['GetFldSelectString', 'GetFldSelectMultiple', 'GetFldRadioString'].includes(newFld.value)" :options="fldVueOptionsItems"/>
         <edit-fld-vue-files-params v-if="newFld.value === 'GetFldFiles'" :params="fldVueFilesParams"/>
 
         <q-checkbox label="обязательное к заполнению" v-model="is_required"/>
@@ -112,6 +112,8 @@
             {label: 'тэги', value: 'GetFldTag'},
             {label: 'ссылка на другую таблицу', value: 'GetFldRef'},
             {label: 'выбор из списка', value: 'GetFldSelectString'},
+            {label: 'выбор нескольких вариантов из списка', value: 'GetFldSelectMultiple'},
+            {label: 'выбор из списка (radio button)', value: 'GetFldRadioString'},
             {label: 'файлы', value: 'GetFldFiles'},
           ]
 
@@ -203,7 +205,7 @@
     }
 
     const checkGetFldSelectString = (newFld, fldVueOptionsItems) => {
-      if (newFld.value.value === 'GetFldSelectString') {
+      if (['GetFldSelectString', 'GetFldSelectMultiple', 'GetFldRadioString'].includes(newFld.value.value)) {
         let isError = false
         fldVueOptionsItems.value.map(v => {
           if ((!v.Label || v.Label.length === 0) || (!v.Value || v.Value.length === 0))  isError = true

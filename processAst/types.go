@@ -5,6 +5,12 @@ import "github.com/dave/dst"
 const (
 	GET_FLD_TITLE = "GetFldTitle"
 	GET_FLD_TITLE_COMPUTED = "GetFldTitleComputed"
+	GET_FLD_STRING = "GetFldString"
+	GET_FLD_SELECT_STRING = "GetFldSelectString"
+	GET_FLD_SELECT_MULTIPLE = "GetFldSelectMultiple"
+	GET_FLD_RADIO_STRING = "GetFldRadioString"
+	GET_FLD_REF = "GetFldRef"
+	GET_FLD_FILES = "GetFldFiles"
 )
 
 type (

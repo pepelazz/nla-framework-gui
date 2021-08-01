@@ -10,7 +10,7 @@
       <q-card-section class="q-pt-none">
         <q-input dense v-model="localFld.name_ru" autofocus outlined label="название" @keyup.enter="isShowDialog=false"/>
 
-        <edit-fld-vue-options-items v-if="localFld.func_name === 'GetFldSelectString'" :options="localFld.fld_vue_options_item"/>
+        <edit-fld-vue-options-items v-if="['GetFldSelectString', 'GetFldSelectMultiple', 'GetFldRadioString'].includes(localFld.func_name)" :options="localFld.fld_vue_options_item"/>
         <edit-fld-vue-files-params v-if="localFld.func_name === 'GetFldFiles'" :params="localFld.fld_vue_files_params"/>
 
       </q-card-section>

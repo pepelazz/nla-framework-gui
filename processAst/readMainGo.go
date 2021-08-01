@@ -63,7 +63,7 @@ func (doc *Doc) ReadMainGo() error {
 										if i == 2 && arg.Kind == token.INT {
 											fld.Size, _ = strconv.Atoi(arg.Value)
 										}
-										if i == 2 && arg.Kind == token.STRING && fld.FuncName == "GetFldRef" {
+										if i == 2 && arg.Kind == token.STRING && fld.FuncName == GET_FLD_REF {
 											fld.RefTable = replaceQuotes(arg.Value)
 										}
 										// обработка params
@@ -85,14 +85,14 @@ func (doc *Doc) ReadMainGo() error {
 										fld.RowCol = rc
 									}
 								}
-								if fld.FuncName == "GetFldSelectString" {
+								if fld.FuncName == GET_FLD_SELECT_STRING || fld.FuncName == GET_FLD_SELECT_MULTIPLE || fld.FuncName == GET_FLD_RADIO_STRING {
 									res := findArrType(arg, "FldVueOptionsItem")
 									if len(res) > 0 {
 										fld.FldVueOptionsItem = res
 									}
 								}
 
-								if fld.FuncName == "GetFldFiles" {
+								if fld.FuncName == GET_FLD_FILES {
 									res := findObjectType(arg, "FldVueFilesParams")
 									if len(res) > 0 {
 										fld.FldVueFilesParams = res

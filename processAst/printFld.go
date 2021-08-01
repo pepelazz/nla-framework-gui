@@ -18,10 +18,10 @@ func (fld *Fld) Print() *dst.CallExpr  {
 	if len(fld.NameRu) > 0 {
 		args = append(args, &dst.BasicLit{Kind: token.STRING, Value: fmt.Sprintf("%q", fld.NameRu)})
 	}
-	if fld.FuncName == "GetFldSelectString" ||  fld.FuncName == "GetFldString"{
+	if fld.FuncName == GET_FLD_SELECT_STRING ||  fld.FuncName == GET_FLD_STRING{
 		args = append(args, &dst.BasicLit{Kind: token.INT, Value: fmt.Sprintf("%v", fld.Size)})
 	}
-	if fld.FuncName == "GetFldRef" {
+	if fld.FuncName == GET_FLD_REF {
 		args = append(args, &dst.BasicLit{Kind: token.INT, Value:  fmt.Sprintf("%q", fld.RefTable)})
 	}
 	// печать RowCol
@@ -44,10 +44,10 @@ func (fld *Fld) Print() *dst.CallExpr  {
 		}
 		args = append(args, rows)
 	}
-	if fld.FuncName == "GetFldSelectString" {
+	if fld.FuncName == GET_FLD_SELECT_STRING || fld.FuncName == GET_FLD_SELECT_MULTIPLE || fld.FuncName == GET_FLD_RADIO_STRING {
 		args = append(args, printFldVueOptionsItem(fld))
 	}
-	if fld.FuncName == "GetFldFiles" {
+	if fld.FuncName == GET_FLD_FILES {
 		args = append(args, printFldVueFilesParams(fld))
 	}
 	// печать params
@@ -112,10 +112,10 @@ func printFldVueFilesParams(fld *Fld) *dst.CompositeLit {
 		Elts: []dst.Expr{},
 	}
 	for label, value := range fld.FldVueFilesParams {
-		fmt.Printf("label %s value %s\n", label, value)
 		if len(value) == 0 {
 			continue
 		}
+		v := fmt.Sprintf("%q", value)
 		if label == "MaxFileSize" {
 			v = value
 		}

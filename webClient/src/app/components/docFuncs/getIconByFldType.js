@@ -24,6 +24,12 @@ export default (fld) => {
       return 'pin'
     case 'GetFldDouble':
       return 'pin'
+    case 'GetFldSelectString':
+      return 'rule'
+    case 'GetFldSelectMultiple':
+      return 'checklist'
+    case 'GetFldRadioString':
+      return 'radio_button_checked'
     default:
       return 'text_fields'
   }
