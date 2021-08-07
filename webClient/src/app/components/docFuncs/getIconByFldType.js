@@ -30,6 +30,10 @@ export default (fld) => {
       return 'checklist'
     case 'GetFldRadioString':
       return 'radio_button_checked'
+    case 'GetFldImg':
+      return 'image'
+    case 'GetFldImgList':
+      return 'photo_library'
     default:
       return 'text_fields'
   }

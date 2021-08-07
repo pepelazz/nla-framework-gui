@@ -99,6 +99,13 @@ func (doc *Doc) ReadMainGo() error {
 									}
 								}
 
+								if fld.FuncName == GET_FLD_IMG || fld.FuncName == GET_FLD_IMG_LIST{
+									res := findObjectType(arg, "FldVueImgParams")
+									if len(res) > 0 {
+										fld.FldVueImgParams = res
+									}
+								}
+
 							}
 						}
 					} else {
@@ -254,6 +261,9 @@ func findObjectType(arg dst.Expr, typeName string) (res map[string]string) {
 									}
 									if v, ok := el.Value.(*dst.BasicLit); ok {
 										value = replaceQuotes(v.Value)
+									}
+									if v, ok := el.Value.(*dst.Ident); ok {
+										value = replaceQuotes(v.Name)
 									}
 									res[key] = value
 								}

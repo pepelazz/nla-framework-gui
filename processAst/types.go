@@ -11,6 +11,8 @@ const (
 	GET_FLD_RADIO_STRING = "GetFldRadioString"
 	GET_FLD_REF = "GetFldRef"
 	GET_FLD_FILES = "GetFldFiles"
+	GET_FLD_IMG = "GetFldImg"
+	GET_FLD_IMG_LIST = "GetFldImgList"
 )
 
 type (
@@ -36,6 +38,7 @@ type (
 		Params            []string `json:"params"`
 		FldVueOptionsItem []map[string]string `json:"fld_vue_options_item"`
 		FldVueFilesParams map[string]string `json:"fld_vue_files_params"`
+		FldVueImgParams map[string]string `json:"fld_vue_img_params"`
 		ModifierList      []FldModifier `json:"modifier_list"`
 	}
 

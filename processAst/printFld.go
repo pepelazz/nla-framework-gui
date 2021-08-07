@@ -50,6 +50,9 @@ func (fld *Fld) Print() *dst.CallExpr  {
 	if fld.FuncName == GET_FLD_FILES {
 		args = append(args, printFldVueFilesParams(fld))
 	}
+	if fld.FuncName == GET_FLD_IMG || fld.FuncName == GET_FLD_IMG_LIST {
+		args = append(args, printFldVueImageParams(fld))
+	}
 	// печать params
 	args = append(args, &dst.BasicLit{Kind: token.STRING, Value:  fmt.Sprintf("%q", fld.ColClass)})
 	for i, p := range fld.Params {
@@ -117,6 +120,24 @@ func printFldVueFilesParams(fld *Fld) *dst.CompositeLit {
 		}
 		v := fmt.Sprintf("%q", value)
 		if label == "MaxFileSize" {
+			v = value
+		}
+		el.Elts = append(el.Elts, &dst.KeyValueExpr{Key: &dst.Ident{ Name: label}, Value: &dst.BasicLit{Kind: token.STRING, Value: v}})
+	}
+	return el
+}
+
+func printFldVueImageParams(fld *Fld) *dst.CompositeLit {
+	el := &dst.CompositeLit{
+		Type: &dst.SelectorExpr {X: &dst.Ident{Name: "t"}, Sel: &dst.Ident{Name: "FldVueImgParams"}},
+		Elts: []dst.Expr{},
+	}
+	for label, value := range fld.FldVueImgParams {
+		if len(value) == 0 {
+			continue
+		}
+		v := fmt.Sprintf("%q", value)
+		if label == "MaxFileSize" || label=="Width" || label=="CanAddUrls" {
 			v = value
 		}
 		el.Elts = append(el.Elts, &dst.KeyValueExpr{Key: &dst.Ident{ Name: label}, Value: &dst.BasicLit{Kind: token.STRING, Value: v}})
