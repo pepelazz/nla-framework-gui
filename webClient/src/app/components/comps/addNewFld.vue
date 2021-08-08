@@ -58,6 +58,7 @@
 
         <edit-fld-vue-options-items v-if="['GetFldSelectString', 'GetFldSelectMultiple', 'GetFldRadioString'].includes(newFld.value)" :options="fldVueOptionsItems"/>
         <edit-fld-vue-files-params v-if="newFld.value === 'GetFldFiles'" :params="fldVueFilesParams"/>
+        <edit-fld-vue-img-params v-if="['GetFldImg', 'GetFldImgList'].includes(newFld.value)" :params="fldVueImgParams"/>
 
         <q-checkbox label="обязательное к заполнению" v-model="is_required"/>
 
@@ -77,8 +78,9 @@
     import {Notify} from 'quasar'
     import editFldVueOptionsItems from 'src/app/components/comps/comps/editFldVueOptionsItems'
     import editFldVueFilesParams from 'src/app/components/comps/comps/editFldVueFilesParams'
+    import editFldVueImgParams from 'src/app/components/comps/comps/editFldVueImgParams'
     export default {
-      components: {editFldVueOptionsItems, editFldVueFilesParams},
+      components: {editFldVueOptionsItems, editFldVueFilesParams, editFldVueImgParams},
       props: ['selectedDoc', 'project'],
         emits: ['update'],
         setup(props, {emit}) {
@@ -92,6 +94,7 @@
           const refTableName = ref(null)
           const fldVueOptionsItems = ref([])
           const fldVueFilesParams = reactive({Accept: null, MaxFileSize: null})
+          const fldVueImgParams = reactive({Accept: null, MaxFileSize: null, Crop: null, Width: null, CanAddUrls: false})
 
           let docListOptions = computed(() => {
             return props.project.docs.filter(d => d.name !== props.selectedDoc.name)
@@ -115,6 +118,8 @@
             {label: 'выбор нескольких вариантов из списка', value: 'GetFldSelectMultiple'},
             {label: 'выбор из списка (radio button)', value: 'GetFldRadioString'},
             {label: 'файлы', value: 'GetFldFiles'},
+            {label: 'фото', value: 'GetFldImg'},
+            {label: 'галлерея фото', value: 'GetFldImgList'},
           ]
 
           const toStep2 = () => {
@@ -174,6 +179,7 @@
               func_name: newFld.value.value, name: name.value, name_ru: name_ru.value, size: +size.value, row_col, ref_table: refTableName.value?.value,
               fld_vue_options_item,
               fld_vue_files_params: fldVueFilesParams,
+              fld_vue_img_params: fldVueImgParams,
               col_class: 'col-4'})
             isShowDialogAddFld.value = false
             name.value = null
@@ -199,6 +205,7 @@
             refTableName,
             fldVueOptionsItems,
             fldVueFilesParams,
+            fldVueImgParams,
             toStep2,
           }
         }

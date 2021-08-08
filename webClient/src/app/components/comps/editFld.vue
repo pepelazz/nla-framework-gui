@@ -12,6 +12,7 @@
 
         <edit-fld-vue-options-items v-if="['GetFldSelectString', 'GetFldSelectMultiple', 'GetFldRadioString'].includes(localFld.func_name)" :options="localFld.fld_vue_options_item"/>
         <edit-fld-vue-files-params v-if="localFld.func_name === 'GetFldFiles'" :params="localFld.fld_vue_files_params"/>
+        <edit-fld-vue-img-params v-if="['GetFldImg', 'GetFldImgList'].includes(localFld.func_name)" :params="localFld.fld_vue_img_params"/>
 
       </q-card-section>
 
@@ -26,10 +27,11 @@
 <script>
   import editFldVueOptionsItems from 'src/app/components/comps/comps/editFldVueOptionsItems'
   import editFldVueFilesParams from 'src/app/components/comps/comps/editFldVueFilesParams'
+  import editFldVueImgParams from 'src/app/components/comps/comps/editFldVueImgParams'
   import {ref, toRefs, onMounted} from 'vue'
     export default {
       props: ['fld'],
-      components: {editFldVueOptionsItems, editFldVueFilesParams},
+      components: {editFldVueOptionsItems, editFldVueFilesParams, editFldVueImgParams},
       setup(props) {
         let initFld
         const isShowDialog = ref(false)
@@ -38,6 +40,10 @@
         // добавляем дефолтный объект fld_vue_files_params
         if (localFld.value.func_name === 'GetFldFiles' && !localFld.value.fld_vue_files_params) {
           localFld.value.fld_vue_files_params = {Accept: null, MaxFileSize: null}
+        }
+        // добавляем дефолтный объект fld_vue_img_params
+        if (['GetFldImg', 'GetFldImgList'].includes(localFld.func_name)  && !localFld.value.fld_vue_img_params) {
+          localFld.value.fld_vue_img_params = {Accept: null, MaxFileSize: null, Crop: null, Width: null, CanAddUrls: false}
         }
         const cancel = () => {
           localFld.value.name_ru = initFld.name_ru

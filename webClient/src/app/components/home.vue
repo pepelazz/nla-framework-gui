@@ -29,6 +29,8 @@
 <script>
     import {Notify} from "quasar";
     import docFlds from 'src/app/components/docFlds'
+    import hookProjectBeforeSave from 'src/app/components/hookProjectBeforeSave'
+    import hookProjectBeforeLoad from 'src/app/components/hookProjectBeforeLoad'
 
     export default {
         components: {docFlds},
@@ -51,7 +53,7 @@
                 })
                 return v
               })
-              this.project = res.result
+              this.project = hookProjectBeforeLoad(res.result)
             }
           })
         },
@@ -59,7 +61,7 @@
           this.selectedDoc = doc
         },
         saveProject() {
-          this.$utils.postApiRequest({url: "/saveProject", params: this.project}).subscribe(res => {
+          this.$utils.postApiRequest({url: "/saveProject", params: hookProjectBeforeSave(this.project)}).subscribe(res => {
             if (res.ok) {
               Notify.create({
                 color: 'positive',
