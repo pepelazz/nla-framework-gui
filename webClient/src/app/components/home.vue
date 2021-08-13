@@ -2,7 +2,11 @@
   <q-page padding>
     <div class="row q-col-gutter-md" v-if="project">
       <div class="col-3">
-        <q-list bordered>
+        <!-- кнопки       -->
+        <comp-add-doc-btn/>
+
+        <!-- список таблиц       -->
+        <q-list bordered class="q-mt-sm">
           <q-item v-for="doc in project.docs" :key="doc.id">
             <q-item-section avatar>
               <q-avatar rounded @click="showDoc(doc)" class="cursor-pointer">
@@ -29,11 +33,13 @@
 <script>
     import {Notify} from "quasar";
     import docFlds from 'src/app/components/docFlds'
+    import compAddDocBtn from 'src/app/components/comps/addDocBtn'
     import hookProjectBeforeSave from 'src/app/components/hookProjectBeforeSave'
     import hookProjectBeforeLoad from 'src/app/components/hookProjectBeforeLoad'
 
+
     export default {
-        components: {docFlds},
+        components: {docFlds, compAddDocBtn},
         data() {
             return {
               project: null,

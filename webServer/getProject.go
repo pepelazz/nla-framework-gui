@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pepelazz/guiDev/nla_framework_gui/processAst"
 	"github.com/pepelazz/guiDev/src/utils"
+	"github.com/sanity-io/litter"
 	"net/http"
 	"os"
 	"os/exec"
@@ -56,6 +57,25 @@ func SaveProject(c *gin.Context)  {
 	}
 
 	ProjectTemplateGenerate(c)
+}
+
+func AddDoc(c *gin.Context)  {
+	params := struct {
+		Params struct{
+			Name string `json:"name"`
+			NameRu string `json:"name_ru"`
+			NameRuPlural string `json:"name_ru_plural"`
+		} `json:"params"`
+	}{}
+	err := c.BindJSON(&params)
+	if err != nil {
+		utils.HttpError(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	litter.Dump(params)
+
+	utils.HttpSuccess(c, "ok")
 }
 
 // генерация проекта

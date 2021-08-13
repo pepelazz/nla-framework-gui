@@ -16,6 +16,7 @@ func Start() {
 
 	r.POST("/getProject", GetProject)
 	r.POST("/saveProject", SaveProject)
+	r.POST("/addDoc", AddDoc)
 	r.POST("/projectTemplateGenerate", ProjectTemplateGenerate)
 
 	r.Run(fmt.Sprintf(":%v", PORT))
