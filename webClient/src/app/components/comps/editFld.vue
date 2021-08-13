@@ -4,11 +4,12 @@
   <q-dialog v-model="isShowDialog" persistent>
     <q-card style="min-width: 350px">
       <q-card-section>
-        <div class="text-h6">{{localFld.name}}</div>
+        <div class="text-h6">{{localFld.name || 'TitleComputed'}}</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-input dense v-model="localFld.name_ru" autofocus outlined label="название" @keyup.enter="isShowDialog=false"/>
+        <q-input v-if="localFld.func_name !== 'GetFldTitleComputed'" dense v-model="localFld.name_ru" autofocus outlined label="название" @keyup.enter="isShowDialog=false"/>
+
 
         <edit-fld-vue-options-items v-if="['GetFldSelectString', 'GetFldSelectMultiple', 'GetFldRadioString'].includes(localFld.func_name)" :options="localFld.fld_vue_options_item"/>
         <edit-fld-vue-files-params v-if="localFld.func_name === 'GetFldFiles'" :params="localFld.fld_vue_files_params"/>

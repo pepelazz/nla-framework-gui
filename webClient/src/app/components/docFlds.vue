@@ -31,7 +31,10 @@
               </q-card-section>
               <q-card-section class="q-pa-none">
                 <div class="text-weight-regular">{{fld.name_ru || 'название'}}</div>
-                <div class="text-weight-medium">{{fld.name || 'title'}}</div>
+                <div class="text-weight-medium">{{fld.name || 'title'}}
+                  <!-- редактирование title. Возможность переключение между title и titleComputed    -->
+                  <comp-title-fld-edit v-if="['GetFldTitle', 'GetFldTitleComputed'].includes(fld.func_name)" :fld="fld"/>
+                </div>
               </q-card-section>
             </q-card-section>
 
@@ -59,11 +62,12 @@
   import compAddNewFld from 'src/app/components/comps/addNewFld'
   import compDeleteFld from 'src/app/components/comps/deleteFld'
   import compEditFld from 'src/app/components/comps/editFld'
+  import compTitleFldEdit from 'src/app/components/comps/titleFldEdit'
 
   export default {
     props: ['selectedDoc', 'project'],
     emits: ['update'],
-    components: {docGridEdit, compAddNewFld, compDeleteFld, compEditFld},
+    components: {docGridEdit, compAddNewFld, compDeleteFld, compEditFld, compTitleFldEdit},
     setup(props, {emit}) {
       const doc = toRefs(props).selectedDoc
       const projectLocal = toRefs(props).project
