@@ -3,7 +3,7 @@
     <div class="row q-col-gutter-md" v-if="project">
       <div class="col-3">
         <!-- кнопки       -->
-        <comp-add-doc-btn @update="saveProject"/>
+        <comp-add-doc-btn @update="getProject"/>
 
         <!-- список таблиц       -->
         <q-list bordered class="q-mt-sm">
@@ -74,7 +74,6 @@
                 position: 'bottom-right',
                 message: "изменения сохранены"
               })
-              this.getProject()
             }
           })
         },

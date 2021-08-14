@@ -34,13 +34,19 @@
                 <div class="text-weight-medium">{{fld.name || 'title'}}
                   <!-- редактирование title. Возможность переключение между title и titleComputed    -->
                   <comp-title-fld-edit v-if="['GetFldTitle', 'GetFldTitleComputed'].includes(fld.func_name)" :fld="fld"/>
+
                 </div>
               </q-card-section>
             </q-card-section>
 
             <q-separator />
             <q-card-actions style="padding-top: 2px; padding-bottom: 2px;">
-              <comp-edit-fld v-if="fld.name" :fld="fld"/>
+              <comp-edit-fld v-if="fld.name" :fld="fld" class="q-ml-lg"/>
+              <!-- иконки для GetFldRef -->
+              <q-icon name="link" v-if="isShowLink(fld)" color="grey" class="q-mr-sm"/>
+              <q-icon name="add" v-if="isAddNew(fld)" color="grey" class="q-mr-sm"/>
+              <q-icon name="delete" v-if="isClearable(fld)" color="grey" class="q-mr-sm"/>
+
               <q-space/>
               <comp-delete-fld v-if="fld.name" :name="fld.name_ru" @remove="removeFld(fld)"/>
             </q-card-actions>
@@ -55,7 +61,7 @@
 <script>
   // import _ from 'lodash'
   import docGridEdit from 'src/app/components/comps/docGridEdit'
-  import {toRefs, computed, ref, watch, watchEffect} from 'vue'
+  import {toRefs, computed, ref, watch} from 'vue'
   import fldsGroupByRows from 'src/app/components/docFuncs/fldsGroupByRows'
   import getIconByFldType from 'src/app/components/docFuncs/getIconByFldType'
   import docGridUpdateFunc from 'src/app/components/docFuncs/docGridUpdate'
@@ -76,6 +82,10 @@
       const isShowDocGridEdit = ref(false)
 
       const docGridUpdate = (flds) => docGridUpdateFunc(doc, flds)
+
+      const isShowLink = computed(() => (fld) => fld.func_name === 'GetFldRef' && fld.params?.includes('isShowLink'))
+      const isAddNew = computed(() => (fld) => fld.func_name === 'GetFldRef' && fld.params?.includes('isAddNew'))
+      const isClearable = computed(() => (fld) => fld.func_name === 'GetFldRef' && fld.params?.includes('isClearable'))
 
 
       watch(doc, (v) => isShowDocGridEdit.value = false )
@@ -102,6 +112,7 @@
         docGridUpdate,
         addNewFld,
         removeFld,
+        isShowLink, isAddNew, isClearable,
       }
     },
   }

@@ -143,8 +143,8 @@
             }
             // убираем все лишиние символы и пробелы. Приводим к маленьким буквам
             name.value = name.value.replace(/[^\w\s]/gi, '').replace(/ /g, '').toLowerCase()
-            if (name.value?.length < 4) {
-              Notify.create({type: 'negative', message: `поле 'name' должно быть не меньше 4 букв`})
+            if (name.value?.length < 3) {
+              Notify.create({type: 'negative', message: `поле 'name' должно быть не меньше 3 букв`})
               return
             }
             // проверяем что нет дублирования уже существующих названий полей
@@ -158,8 +158,8 @@
               return
             }
 
-            if (!name_ru.value || name_ru.value?.length < 4) {
-              Notify.create({type: 'negative', message: `поле 'name_ru' должно быть не меньше 4 букв`})
+            if (!name_ru.value || name_ru.value?.length < 3) {
+              Notify.create({type: 'negative', message: `поле 'name_ru' должно быть не меньше 3 букв`})
               return;
             }
 

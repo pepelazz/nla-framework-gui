@@ -14,7 +14,7 @@
         <edit-fld-vue-options-items v-if="['GetFldSelectString', 'GetFldSelectMultiple', 'GetFldRadioString'].includes(localFld.func_name)" :options="localFld.fld_vue_options_item"/>
         <edit-fld-vue-files-params v-if="localFld.func_name === 'GetFldFiles'" :params="localFld.fld_vue_files_params"/>
         <edit-fld-vue-img-params v-if="['GetFldImg', 'GetFldImgList'].includes(localFld.func_name)" :params="localFld.fld_vue_img_params"/>
-
+        <edit-fld-get-ref v-if="localFld.func_name === 'GetFldRef'" :fld="localFld"/>
       </q-card-section>
 
       <q-card-actions align="right" class="text-primary">
@@ -29,10 +29,11 @@
   import editFldVueOptionsItems from 'src/app/components/comps/comps/editFldVueOptionsItems'
   import editFldVueFilesParams from 'src/app/components/comps/comps/editFldVueFilesParams'
   import editFldVueImgParams from 'src/app/components/comps/comps/editFldVueImgParams'
+  import editFldGetRef from 'src/app/components/comps/comps/editFldGetRef'
   import {ref, toRefs, onMounted} from 'vue'
     export default {
       props: ['fld'],
-      components: {editFldVueOptionsItems, editFldVueFilesParams, editFldVueImgParams},
+      components: {editFldVueOptionsItems, editFldVueFilesParams, editFldVueImgParams, editFldGetRef},
       setup(props) {
         let initFld
         const isShowDialog = ref(false)
