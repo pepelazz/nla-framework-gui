@@ -27,7 +27,8 @@
   import {Notify} from 'quasar'
   import $utils from '../../plugins/utils'
   export default {
-    setup() {
+    emits:['update'],
+    setup(props, {emit}) {
       const isShowDialog = ref(false)
       const name = ref(null)
       const name_ru = ref(null)
@@ -50,7 +51,8 @@
           url: "/addDoc",
           params: {name: name.value, name_ru: name_ru.value, name_ru_plural: name_ru_plural.value}
         }).subscribe(res => {
-          console.log('/addDoc res', res)
+          isShowDialog.value = false
+          emit('update')
         })
       }
 

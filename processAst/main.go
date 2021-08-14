@@ -2,7 +2,9 @@ package processAst
 
 import (
 	"github.com/dave/dst"
+	"github.com/dave/dst/decorator"
 	"io/ioutil"
+	"os"
 )
 
 var Project = ProjectType{
@@ -23,6 +25,11 @@ var Project = ProjectType{
 //}
 
 func ReadProject() error {
+	// читаем main.go
+	err := Project.ReadMainGo()
+	if err != nil {
+		return err
+	}
 	// сбрасываем старые значения
 	Project.Docs = []Doc{}
 	dirs, err := ioutil.ReadDir("../projectTemplate/docs")
@@ -41,12 +48,31 @@ func ReadProject() error {
 }
 
 func WriteProject() error {
+	err := Project.WriteMainGo()
+	if err != nil {
+		return err
+	}
 	for _, d := range Project.Docs {
-		err := d.WriteMainGo()
+		err = d.WriteMainGo()
 		if err != nil {
 			return err
 		}
 	}
+	return nil
+}
+
+// читаем основной main.go проекта
+func (p *ProjectType) ReadMainGo() error {
+	b, err := os.ReadFile("../projectTemplate/main.go")
+	if err != nil {
+		return err
+	}
+	dstFile, err := decorator.Parse(b)
+	if err != nil {
+		return err
+	}
+	p.DstFile = dstFile
+
 	return nil
 }
 

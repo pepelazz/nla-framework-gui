@@ -18,6 +18,7 @@ const (
 type (
 	ProjectType struct {
 		Docs []Doc `json:"docs"`
+		DstFile      *dst.File `json:"-"`
 	}
 	Doc struct {
 		Name         string `json:"name"`
