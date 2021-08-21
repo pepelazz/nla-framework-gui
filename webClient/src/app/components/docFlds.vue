@@ -43,9 +43,13 @@
             <q-card-actions style="padding-top: 2px; padding-bottom: 2px;">
               <comp-edit-fld v-if="fld.name" :fld="fld" class="q-ml-lg"/>
               <!-- иконки для GetFldRef -->
-              <q-icon name="link" v-if="isShowLink(fld)" color="grey" class="q-mr-sm"/>
-              <q-icon name="add" v-if="isAddNew(fld)" color="grey" class="q-mr-sm"/>
-              <q-icon name="delete" v-if="isClearable(fld)" color="grey" class="q-mr-sm"/>
+              <q-icon name="link" v-if="isShowLink(fld)" color="grey" class="q-mr-sm"><q-tooltip>показывать ссылку</q-tooltip></q-icon>
+              <q-icon name="add" v-if="isAddNew(fld)" color="grey" class="q-mr-sm"><q-tooltip>возможность добавления</q-tooltip></q-icon>
+              <q-icon name="delete" v-if="isClearable(fld)" color="grey" class="q-mr-sm"><q-tooltip>возможность удаления</q-tooltip></q-icon>
+
+              <!-- иконки для модификаторов -->
+              <q-icon name="search" v-if="isSearch(fld)" color="grey" class="q-mr-sm"><q-tooltip>участвует в поиске</q-tooltip></q-icon>
+              <q-icon name="verified" v-if="isRequired(fld)" color="grey" class="q-mr-sm"><q-tooltip>обязательное к заполнению</q-tooltip></q-icon>
 
               <q-space/>
               <comp-delete-fld v-if="fld.name" :name="fld.name_ru" @remove="removeFld(fld)"/>
@@ -86,6 +90,8 @@
       const isShowLink = computed(() => (fld) => fld.func_name === 'GetFldRef' && fld.params?.includes('isShowLink'))
       const isAddNew = computed(() => (fld) => fld.func_name === 'GetFldRef' && fld.params?.includes('isAddNew'))
       const isClearable = computed(() => (fld) => fld.func_name === 'GetFldRef' && fld.params?.includes('isClearable'))
+      const isSearch = computed(() => (fld) => fld.modifier_list?.some(v => v.Name === 'SetIsSearch'))
+      const isRequired = computed(() => (fld) => fld.modifier_list?.some(v => v.Name === 'SetIsRequired'))
 
 
       watch(doc, (v) => isShowDocGridEdit.value = false )
@@ -112,7 +118,7 @@
         docGridUpdate,
         addNewFld,
         removeFld,
-        isShowLink, isAddNew, isClearable,
+        isShowLink, isAddNew, isClearable, isSearch, isRequired,
       }
     },
   }

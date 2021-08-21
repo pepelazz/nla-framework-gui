@@ -1,5 +1,5 @@
 <template>
-  <q-btn flat round icon="edit" color="grey" size="sm" @click="showDialog"><q-tooltip>редактировать</q-tooltip></q-btn>
+  <q-btn flat round icon="edit" color="primary" size="sm" @click="showDialog"><q-tooltip>редактировать</q-tooltip></q-btn>
 
   <q-dialog v-model="isShowDialog" persistent>
     <q-card style="min-width: 350px">
@@ -15,6 +15,8 @@
         <edit-fld-vue-files-params v-if="localFld.func_name === 'GetFldFiles'" :params="localFld.fld_vue_files_params"/>
         <edit-fld-vue-img-params v-if="['GetFldImg', 'GetFldImgList'].includes(localFld.func_name)" :params="localFld.fld_vue_img_params"/>
         <edit-fld-get-ref v-if="localFld.func_name === 'GetFldRef'" :fld="localFld"/>
+        <!-- модификаторы       -->
+        <edit-fld-modifiers :fld="localFld"/>
       </q-card-section>
 
       <q-card-actions align="right" class="text-primary">
@@ -31,9 +33,11 @@
   import editFldVueImgParams from 'src/app/components/comps/comps/editFldVueImgParams'
   import editFldGetRef from 'src/app/components/comps/comps/editFldGetRef'
   import {ref, toRefs, onMounted} from 'vue'
+  import EditFldModifiers from "src/app/components/comps/comps/editFldModifiers";
     export default {
+      inheritAttrs: false,
       props: ['fld'],
-      components: {editFldVueOptionsItems, editFldVueFilesParams, editFldVueImgParams, editFldGetRef},
+      components: {EditFldModifiers, editFldVueOptionsItems, editFldVueFilesParams, editFldVueImgParams, editFldGetRef},
       setup(props) {
         let initFld
         const isShowDialog = ref(false)
