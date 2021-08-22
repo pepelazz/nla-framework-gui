@@ -25,7 +25,7 @@
       </div>
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="save" color="accent" @click="saveProject"/>
+      <q-btn fab icon="save" color="accent" @click="saveProject" :loading="isSaving"/>
     </q-page-sticky>
   </q-page>
 </template>
@@ -44,6 +44,7 @@
             return {
               project: null,
               selectedDoc: null,
+              isSaving: false,
             }
         },
       methods: {
@@ -67,7 +68,9 @@
           this.selectedDoc = doc
         },
         saveProject() {
+          this.isSaving = true
           this.$utils.postApiRequest({url: "/saveProject", params: hookProjectBeforeSave(this.project)}).subscribe(res => {
+            this.isSaving = false
             if (res.ok) {
               Notify.create({
                 color: 'positive',

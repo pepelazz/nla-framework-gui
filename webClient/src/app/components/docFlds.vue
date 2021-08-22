@@ -50,6 +50,9 @@
               <!-- иконки для модификаторов -->
               <q-icon name="search" v-if="isSearch(fld)" color="grey" class="q-mr-sm"><q-tooltip>участвует в поиске</q-tooltip></q-icon>
               <q-icon name="verified" v-if="isRequired(fld)" color="grey" class="q-mr-sm"><q-tooltip>обязательное к заполнению</q-tooltip></q-icon>
+              <q-icon name="flare" v-if="isUniq(fld)" color="grey" class="q-mr-sm"><q-tooltip>уникальное значение</q-tooltip></q-icon>
+              <q-icon name="visibility_off" v-if="isVif(fld)" color="grey" class="q-mr-sm"><q-tooltip>при условии скрыто</q-tooltip></q-icon>
+              <q-icon name="local_library" v-if="isReadonly(fld)" color="grey" class="q-mr-sm"><q-tooltip>при условии только для чтения</q-tooltip></q-icon>
 
               <q-space/>
               <comp-delete-fld v-if="fld.name" :name="fld.name_ru" @remove="removeFld(fld)"/>
@@ -92,6 +95,9 @@
       const isClearable = computed(() => (fld) => fld.func_name === 'GetFldRef' && fld.params?.includes('isClearable'))
       const isSearch = computed(() => (fld) => fld.modifier_list?.some(v => v.Name === 'SetIsSearch'))
       const isRequired = computed(() => (fld) => fld.modifier_list?.some(v => v.Name === 'SetIsRequired'))
+      const isUniq = computed(() => (fld) => fld.modifier_list?.some(v => v.Name === 'SetIsUniq'))
+      const isVif = computed(() => (fld) => fld.modifier_list?.some(v => v.Name === 'SetVif'))
+      const isReadonly = computed(() => (fld) => fld.modifier_list?.some(v => v.Name === 'SetReadonly'))
 
 
       watch(doc, (v) => isShowDocGridEdit.value = false )
@@ -118,7 +124,7 @@
         docGridUpdate,
         addNewFld,
         removeFld,
-        isShowLink, isAddNew, isClearable, isSearch, isRequired,
+        isShowLink, isAddNew, isClearable, isSearch, isRequired, isUniq, isVif, isReadonly,
       }
     },
   }
