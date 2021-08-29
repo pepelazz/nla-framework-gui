@@ -50,8 +50,11 @@
           }
           let y = i - 1
           let w = fld.col_class.replace("col-", "")/2
-          // noMove для поля title
-          items.push({x, y, h: 1, w, content: fld.name || 'title', noMove:  !fld.name, locked:  !fld.name})
+          // titleComputed не добавляем в сетку
+          if (fld.func_name !== 'GetFldTitleComputed') {
+            // noMove для поля title
+            items.push({x, y, h: 1, w, content: fld.name || 'title', noMove:  !fld.name, locked:  !fld.name})
+          }
         })
       })
 

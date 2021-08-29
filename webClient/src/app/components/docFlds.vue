@@ -19,7 +19,10 @@
       <comp-add-new-fld :selectedDoc="selectedDoc" :project="projectLocal" @update="addNewFld"/>
     </div>
     <div class="col">
+
+      <!-- сетка     -->
       <doc-grid-edit v-if="isShowDocGridEdit" :fldsByRows="fldsByRows" class="q-mb-md" @update="docGridUpdate" @close="isShowDocGridEdit = false"/>
+
       <div class="row q-col-gutter-md q-mb-sm" v-for="row in fldsByRows">
         <div :class="fld.col_class" v-for="fld in row" :key="fld.id">
           <q-card class="my-card" bordered>
