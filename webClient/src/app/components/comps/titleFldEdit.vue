@@ -34,23 +34,27 @@
   import editFldVueOptionsItems from 'src/app/components/comps/comps/editFldVueOptionsItems'
   import editFldVueFilesParams from 'src/app/components/comps/comps/editFldVueFilesParams'
   import editFldVueImgParams from 'src/app/components/comps/comps/editFldVueImgParams'
-  import {ref, toRefs, onMounted} from 'vue'
+  import {ref, toRefs, onMounted, onUpdated} from 'vue'
     export default {
       props: ['fld'],
       setup(props) {
         let initFld
         const isShowDialog = ref(false)
         const localFld = toRefs(props).fld
-        if (!localFld.value.params) localFld.value.params = []
 
         const cancel = () => {
           localFld.value.name_ru = initFld.name_ru
+          localFld.value.func_name = initFld.func_name
         }
 
         const showDialog = () => {
           isShowDialog.value = true
           initFld =Object.assign({}, props.fld)
         }
+
+        onUpdated(() => {
+          if (!localFld.value.params) localFld.value.params = []
+        })
 
         return {
           isShowDialog,
