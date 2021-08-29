@@ -72,6 +72,7 @@ func (p *ProjectType) ReadMainGo() error {
 		return err
 	}
 	p.DstFile = dstFile
+	p.ReadMainGoMenu()
 
 	return nil
 }
