@@ -4,6 +4,7 @@
       <div class="col-3">
         <!-- кнопки       -->
         <comp-add-doc-btn @update="getProject"/>
+        <comp-menu-dialog :project="project" @update="v => project.menu = v"/>
 
         <!-- список таблиц       -->
         <q-list bordered class="q-mt-sm">
@@ -34,12 +35,13 @@
     import {Notify} from "quasar";
     import docFlds from 'src/app/components/docFlds'
     import compAddDocBtn from 'src/app/components/comps/addDocBtn'
+    import compMenuDialog from 'src/app/components/comps/menuDialog/index'
     import hookProjectBeforeSave from 'src/app/components/hookProjectBeforeSave'
     import hookProjectBeforeLoad from 'src/app/components/hookProjectBeforeLoad'
-
+    import _ from 'lodash'
 
     export default {
-        components: {docFlds, compAddDocBtn},
+        components: {docFlds, compAddDocBtn, compMenuDialog},
         data() {
             return {
               project: null,
@@ -58,6 +60,16 @@
                   fld.id = j
                   return fld
                 })
+                return v
+              })
+              res.result.menu = res.result.menu.map(v => {
+                v.id = _.random(100000)
+                if (v.LinkList) {
+                  v.LinkList = v.LinkList.map(v1 => {
+                    v1.id = _.random(100000)
+                    return v1
+                  })
+                }
                 return v
               })
               this.project = hookProjectBeforeLoad(res.result)
