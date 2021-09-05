@@ -64,6 +64,7 @@
               })
               res.result.menu = res.result.menu.map(v => {
                 v.id = _.random(100000)
+                if (v.IsFolder && !v.LinkList) v.LinkList = []
                 if (v.LinkList) {
                   v.LinkList = v.LinkList.map(v1 => {
                     v1.id = _.random(100000)

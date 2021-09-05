@@ -10,5 +10,9 @@ export default function (project) {
     })
     return doc
   })
+  p.menu = p.menu.map(v => {
+      if (v.IsFolder === true) v.IsFolder = 'true'
+    return v
+  })
   return p
 }

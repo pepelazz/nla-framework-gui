@@ -3,7 +3,7 @@
     <draggable v-model="localMenu" item-key="id" :group="{ name: 'g1' }" style="min-height: 30px;">
       <template #item="{element}">
         <q-item>
-          <q-item-section avatar class="handle">
+          <q-item-section avatar @click="edit(element)" class="cursor-pointer">
             <q-avatar rounded>
               <img :src="element.Icon || docNameIcon(element.DocName)">
             </q-avatar>
@@ -55,7 +55,7 @@
     props: ['project', 'menu'],
     emits: ['update'],
     setup(props, {emit}) {
-      const localMenu = ref(_.cloneDeep(props.menu))
+      const localMenu = ref(props.menu)
 
       const isShowAddDialog = ref(false)
       const newItem = reactive({DocName: null, Url: null, Text: null, Icon: null, IsFolder: null})
@@ -65,7 +65,9 @@
         return {label: v.name_ru, value: v.name}
       })
 
-      watch(localMenu, ()=> emit('update', localMenu))
+      watch(localMenu, ()=> {
+        emit('update', localMenu)
+      })
 
       const docNameTitle = computed(()=> {
         return (docName)=> {
@@ -90,14 +92,19 @@
       const add = () => {
         let v = _.cloneDeep(newItem)
         if (v.DocName) v.DocName = v.DocName.value
+        if (v.IsFolder) v.LinkList = []
         localMenu.value.push(Object.assign({id: _.random(100000)}, v))
         isShowAddDialog.value = false
+      }
+
+      const edit = (item) => {
+        console.log('edit item', item)
       }
 
       return {
         localMenu, docNameTitle, docNameIcon,
         isShowAddDialog, options, newItem,
-        remove, add,
+        remove, add, edit
       }
     }
   }
