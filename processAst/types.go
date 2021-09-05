@@ -19,6 +19,7 @@ type (
 	ProjectType struct {
 		Docs []Doc `json:"docs"`
 		DstFile      *dst.File `json:"-"`
+		Menu []VueMenu `json:"menu"`
 	}
 	Doc struct {
 		Name         string `json:"name"`
@@ -46,5 +47,15 @@ type (
 	FldModifier struct {
 		Name string
 		Args []string
+	}
+
+	VueMenu struct {
+		DocName  string // если указано docName, то url и иконка копируются из описания документа
+		Icon     string
+		Text     string
+		Url      string
+		IsFolder string
+		LinkList []VueMenu
+		Roles    []string
 	}
 )

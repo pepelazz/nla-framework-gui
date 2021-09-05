@@ -68,6 +68,13 @@ func (p *ProjectType) WriteMainGo() error {
 		return true
 	})
 
+	// пишем боковое меню для Vue
+	//	p.Vue.Menu = []t.VueMenu{
+	err := p.WriteMainGoMenu()
+	if err != nil {
+		return err
+	}
+
 	f, err := os.Create("../projectTemplate/main.go")
 	if err != nil {
 		return err
