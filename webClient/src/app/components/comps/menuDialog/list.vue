@@ -43,6 +43,25 @@
       </q-card-actions>
     </q-card>
   </q-dialog>
+
+  <!-- Диалог редактирования -->
+  <q-dialog v-model="isShowEditDialog" position="left">
+    <q-card style="width: 450px; max-width: 80vw;">
+      <q-card-section>
+        <div class="q-gutter-md" style="max-width: 300px">
+          <q-select label="таблица" :options="options" v-model="editItem.DocName"/>
+          <q-input label="url" v-model="editItem.Url"/>
+          <q-input label="текст" v-model="editItem.Text"/>
+          <q-input label="иконка" v-model="editItem.Icon"/>
+          <q-checkbox label="вложенное меню" v-model="editItem.IsFolder"/>
+        </div>
+      </q-card-section>
+      <q-card-actions align="right">
+        <q-btn flat label="OK" color="primary" @click="editOK"/>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
 </template>
 
 <script>
@@ -58,7 +77,9 @@
       const localMenu = ref(props.menu)
 
       const isShowAddDialog = ref(false)
+      const isShowEditDialog = ref(false)
       const newItem = reactive({DocName: null, Url: null, Text: null, Icon: null, IsFolder: null})
+      const editItem = ref(null)
 
       // список документов для меню выбора
       const options = props.project.docs.map(v => {
@@ -98,13 +119,24 @@
       }
 
       const edit = (item) => {
-        console.log('edit item', item)
+        editItem.value = _.cloneDeep(item)
+        const d = props.project.docs.find(v => v.name === item.DocName)
+        if (item.DocName) editItem.value.DocName = {label: d.name_ru, value: d.name}
+        isShowEditDialog.value = true
+      }
+
+      const editOK = () => {
+        const item = localMenu.value.find(v => v.id === editItem.value.id)
+        if (editItem.value.DocName) editItem.value.DocName = editItem.value.DocName.value
+        Object.assign(item, editItem.value)
+        isShowEditDialog.value = false
       }
 
       return {
         localMenu, docNameTitle, docNameIcon,
         isShowAddDialog, options, newItem,
-        remove, add, edit
+        isShowEditDialog, editItem,
+        remove, add, edit, editOK,
       }
     }
   }
